@@ -1,0 +1,9 @@
+stages:
+  - build
+
+Compile:
+  stage: build
+  tags:
+    - typescript
+  script:
+    - tsc --target ES6 */script.ts
