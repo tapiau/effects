@@ -1,163 +1,149 @@
-var Math = ;
-var V3 = /** @class */ (function () {
-    function V3(x, y, z) {
+class V3 {
+    constructor(x, y, z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
-    V3.prototype.add = function (v) {
+    add(v) {
         this.x += v.x;
         this.y += v.y;
         this.z += v.z;
-    };
-    V3.prototype.rotateX = function (angle) {
+    }
+    rotateX(angle) {
         return new V3(this.x, this.y * Math.cos(angle) - this.z * Math.sin(angle), this.z * Math.cos(angle) + this.y * Math.sin(angle));
-    };
-    V3.prototype.rotateY = function (angle) {
+    }
+    rotateY(angle) {
         return new V3(this.x * Math.cos(angle) + this.z * Math.sin(angle), this.y, this.z * Math.cos(angle) - this.x * Math.sin(angle));
-    };
-    V3.prototype.rotateZ = function (angle) {
+    }
+    rotateZ(angle) {
         return new V3(this.x * Math.cos(angle) + this.y * Math.sin(angle), this.y * Math.cos(angle) - this.x * Math.sin(angle), this.z);
-    };
-    return V3;
-}());
-var COLOR = {
+    }
+}
+const COLOR = {
     white: [255, 255, 255, 255],
     black: [0, 0, 0, 255],
 };
-var Line = /** @class */ (function () {
-    function Line(begin, end) {
+class Line {
+    constructor(begin, end) {
     }
-    return Line;
-}());
-var Canvas = /** @class */ (function () {
-    function Canvas() {
-        var _this = this;
+}
+class Canvas {
+    constructor() {
         this.observer = -400;
-        this.addr = function (x, y) { return (y * _this.width + x) * 4; };
-        this.fill = function (rgba) {
-            for (var addr = 0; addr < _this.data.length; addr += 4) {
-                _this.data[addr] = rgba[0];
-                _this.data[addr + 1] = rgba[1];
-                _this.data[addr + 2] = rgba[2];
-                _this.data[addr + 3] = rgba[3];
+        this.addr = (x, y) => (y * this.width + x) * 4;
+        this.fill = (rgba) => {
+            for (let addr = 0; addr < this.data.length; addr += 4) {
+                this.data[addr] = rgba[0];
+                this.data[addr + 1] = rgba[1];
+                this.data[addr + 2] = rgba[2];
+                this.data[addr + 3] = rgba[3];
             }
         };
-        this.setPixel = function (x, y, rgba) {
+        this.setPixel = (x, y, rgba) => {
             x = Math.round(x);
             y = Math.round(y);
-            var addr = _this.addr(x, y);
-            _this.data[addr] = rgba[0];
-            _this.data[addr + 1] = rgba[1];
-            _this.data[addr + 2] = rgba[2];
-            _this.data[addr + 3] = rgba[3];
+            const addr = this.addr(x, y);
+            this.data[addr] = rgba[0];
+            this.data[addr + 1] = rgba[1];
+            this.data[addr + 2] = rgba[2];
+            this.data[addr + 3] = rgba[3];
         };
-        this.linex = function (x, y, len, rgba) {
-            if (x + len > _this.width) {
-                len = _this.width - x;
+        this.linex = (x, y, len, rgba) => {
+            if (x + len > this.width) {
+                len = this.width - x;
             }
-            var addr = _this.addr(x, y);
+            let addr = this.addr(x, y);
             while (len--) {
-                _this.data[addr] = rgba[0];
-                _this.data[addr + 1] = rgba[1];
-                _this.data[addr + 2] = rgba[2];
-                _this.data[addr + 3] = rgba[3];
+                this.data[addr] = rgba[0];
+                this.data[addr + 1] = rgba[1];
+                this.data[addr + 2] = rgba[2];
+                this.data[addr + 3] = rgba[3];
                 addr += 4;
             }
         };
-        this.liney = function (x, y, len, rgba) {
-            if (y + len > _this.height) {
-                len = _this.height - x;
+        this.liney = (x, y, len, rgba) => {
+            if (y + len > this.height) {
+                len = this.height - x;
             }
-            var addr = _this.addr(x, y);
+            let addr = this.addr(x, y);
             while (len--) {
-                _this.data[addr] = rgba[0];
-                _this.data[addr + 1] = rgba[1];
-                _this.data[addr + 2] = rgba[2];
-                _this.data[addr + 3] = rgba[3];
-                addr += _this.width * 4;
+                this.data[addr] = rgba[0];
+                this.data[addr + 1] = rgba[1];
+                this.data[addr + 2] = rgba[2];
+                this.data[addr + 3] = rgba[3];
+                addr += this.width * 4;
             }
         };
-        this.line = function (x1, y1, x2, y2, rgba) {
-            var _a, _b, _c, _d, _e, _f;
+        this.line = (x1, y1, x2, y2, rgba) => {
             if (x1 === x2) {
                 if (y1 > y2) {
-                    _a = [y2, y1], y1 = _a[0], y2 = _a[1];
+                    [y1, y2] = [y2, y1];
                 }
-                _this.liney(x1, y1, y2 - y1, rgba);
+                this.liney(x1, y1, y2 - y1, rgba);
             }
             else if (y1 === y2) {
                 if (x1 > x2) {
-                    _b = [x2, x1], x1 = _b[0], x2 = _b[1];
+                    [x1, x2] = [x2, x1];
                 }
-                _this.linex(x1, y1, x2 - x1, rgba);
+                this.linex(x1, y1, x2 - x1, rgba);
             }
             else {
                 if (Math.abs(x2 - x1) > Math.abs(y2 - y1)) {
                     if (x1 > x2) {
-                        _c = [x2, x1], x1 = _c[0], x2 = _c[1];
-                        _d = [y2, y1], y1 = _d[0], y2 = _d[1];
+                        [x1, x2] = [x2, x1];
+                        [y1, y2] = [y2, y1];
                     }
-                    for (var x = x1; x <= x2; x++) {
-                        var y = Math.round(y1 + (y2 - y1) / (x2 - x1) * (x - x1));
-                        _this.setPixel(x, y, rgba);
+                    for (let x = x1; x <= x2; x++) {
+                        let y = Math.round(y1 + (y2 - y1) / (x2 - x1) * (x - x1));
+                        this.setPixel(x, y, rgba);
                     }
                 }
                 else {
                     if (y1 > y2) {
-                        _e = [x2, x1], x1 = _e[0], x2 = _e[1];
-                        _f = [y2, y1], y1 = _f[0], y2 = _f[1];
+                        [x1, x2] = [x2, x1];
+                        [y1, y2] = [y2, y1];
                     }
-                    for (var y = y1; y <= y2; y++) {
-                        var x = Math.round(x1 + (x2 - x1) / (y2 - y1) * (y - y1));
-                        _this.setPixel(x, y, rgba);
+                    for (let y = y1; y <= y2; y++) {
+                        let x = Math.round(x1 + (x2 - x1) / (y2 - y1) * (y - y1));
+                        this.setPixel(x, y, rgba);
                     }
                 }
             }
         };
-        this.to2d = function (point) {
-            var halfWidth = _this.width / 2;
-            var halfHeight = _this.height / 2;
-            var zFactor = (point.z - _this.observer) / (-_this.observer);
-            var x = Math.round(halfWidth + (point.x / zFactor));
-            var y = Math.round(halfHeight - (point.y / zFactor));
-            return { x: x, y: y };
+        this.to2d = (point) => {
+            const halfWidth = this.width / 2;
+            const halfHeight = this.height / 2;
+            let zFactor = (point.z - this.observer) / (-this.observer);
+            let x = Math.round(halfWidth + (point.x / zFactor));
+            let y = Math.round(halfHeight - (point.y / zFactor));
+            return { x, y };
         };
-        this.plot3d = function (point) {
-            var p = _this.to2d(point);
-            _this.setPixel(p.x, p.y, [0, 0, 0, 255]);
+        this.plot3d = (point) => {
+            const p = this.to2d(point);
+            this.setPixel(p.x, p.y, [0, 0, 0, 255]);
         };
-        this.draw3d = function (begin, end) {
-            var p1 = _this.to2d(begin);
-            var p2 = _this.to2d(end);
-            _this.line(p1.x, p1.y, p2.x, p2.y, [0, 0, 0, 255]);
+        this.draw3d = (begin, end) => {
+            const p1 = this.to2d(begin);
+            const p2 = this.to2d(end);
+            this.line(p1.x, p1.y, p2.x, p2.y, [0, 0, 0, 255]);
         };
-        this.solid3d = function (solid) {
-            solid.lineList.forEach(function (pointPair) { return _this.draw3d(solid.pointList[pointPair[0]], solid.pointList[pointPair[1]]); });
+        this.solid3d = (solid) => {
+            solid.lineList.forEach((pointPair) => this.draw3d(solid.pointList[pointPair[0]], solid.pointList[pointPair[1]]));
         };
         this.canvas = document.getElementById('canvas');
         this.context = this.canvas.getContext('2d');
         this.imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
         this.data = this.imageData.data;
     }
-    Object.defineProperty(Canvas.prototype, "width", {
-        get: function () { return this.canvas.width; },
-        enumerable: false,
-        configurable: true
-    });
+    get width() { return this.canvas.width; }
     ;
-    Object.defineProperty(Canvas.prototype, "height", {
-        get: function () { return this.canvas.height; },
-        enumerable: false,
-        configurable: true
-    });
+    get height() { return this.canvas.height; }
     ;
-    Canvas.prototype.refresh = function () {
+    refresh() {
         this.context.putImageData(this.imageData, 0, 0);
-    };
-    return Canvas;
-}());
-var box = {
+    }
+}
+const box = {
     pointList: [
         new V3(-100, -100, -100),
         new V3(-100, -100, 100),
@@ -183,23 +169,22 @@ var box = {
         [4, 6],
     ]
 };
-var App = /** @class */ (function () {
-    function App() {
+class App {
+    constructor() {
         this.angle = 0;
     }
-    App.prototype.run = function () {
+    run() {
         console.log('2');
         this.canvas = new Canvas();
         this.frame();
-    };
-    App.prototype.frame = function () {
-        var _this = this;
-        var thisbox = {
+    }
+    frame() {
+        const thisbox = {
             pointList: [],
             lineList: [],
         };
-        for (var n = 0; n < box.pointList.length; n++) {
-            var point = box.pointList[n];
+        for (let n = 0; n < box.pointList.length; n++) {
+            let point = box.pointList[n];
             point = point
                 .rotateX(Math.sin(this.angle * 2) * 2 + Math.cos(this.angle * 3) * 3)
                 .rotateY(this.angle / 2)
@@ -207,16 +192,15 @@ var App = /** @class */ (function () {
             point.add(new V3(Math.sin(this.angle * 5) * 200, Math.sin(this.angle * 7) * 200, Math.sin(this.angle * 11) * 400 + 400));
             thisbox.pointList[n] = point;
         }
-        for (var n = 0; n < box.lineList.length; n++) {
+        for (let n = 0; n < box.lineList.length; n++) {
             thisbox.lineList[n] = box.lineList[n];
         }
         this.canvas.fill(COLOR.white);
         this.canvas.solid3d(thisbox);
         this.canvas.refresh();
-        setTimeout(function () {
-            _this.angle += Math.PI / 1000;
-            _this.frame();
+        setTimeout(() => {
+            this.angle += Math.PI / 1000;
+            this.frame();
         }, 1);
-    };
-    return App;
-}());
+    }
+}

@@ -1,5 +1,3 @@
-import Math;
-
 interface V2 {
     x: number;
     y: number;
@@ -20,21 +18,21 @@ class V3 {
         this.y += v.y;
         this.z += v.z;
     }
-    rotateX(angle) {
+    rotateX(angle): V3 {
         return new V3(
             this.x,
             this.y * Math.cos(angle) - this.z * Math.sin(angle),
             this.z * Math.cos(angle) + this.y * Math.sin(angle)
         );
     }
-    rotateY(angle) {
+    rotateY(angle): V3 {
         return new V3(
             this.x * Math.cos(angle) + this.z * Math.sin(angle),
             this.y,
-            this.z * Math.cos(angle) - this.x * Math.sin(angle),
+            this.z * Math.cos(angle) - this.x * Math.sin(angle)
         );
     }
-    rotateZ(angle) {
+    rotateZ(angle): V3 {
         return new V3(
             this.x * Math.cos(angle) + this.y * Math.sin(angle),
             this.y * Math.cos(angle) - this.x * Math.sin(angle),
