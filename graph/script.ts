@@ -206,9 +206,9 @@ class AppGraph {
     }
     prepare () {
         const mesh = new Mesh();
-        const scale = 5;
-        const scaleZ = 10;
-        const range = 40;
+        const scale = 4;
+        const scaleZ = 20;
+        const range = 30;
 
         for(let x=-range; x<range; x++) {
             for(let y=-range; y<range; y++) {
