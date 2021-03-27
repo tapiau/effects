@@ -245,6 +245,7 @@ class AppGraph {
 
             tmpMesh.pointList[n] = point;
         }
+
         // for(let n=0; n<box.lineList.length; n++) {
         //     tmpMesh.lineList[n] = box.lineList[n];
         // }
