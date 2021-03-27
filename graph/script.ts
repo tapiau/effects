@@ -200,23 +200,24 @@ class AppGraph {
     public mesh: Mesh;
 
     run () {
-        this.mesh = this.prepare();
+        // this.mesh = this.prepare();
         this.canvas = new Canvas();
         this.frame();
     }
-    prepare () {
+    prepare (param = 0) {
         const mesh = new Mesh();
+        const stretch = 8;
         const scale = 4;
-        const scaleZ = 20;
+        const scaleZ = 10;
         const range = 30;
 
         for(let x=-range; x<range; x++) {
             for(let y=-range; y<range; y++) {
-                let z = Math.cos(Math.sqrt(x/scale*x/scale + y/scale*y/scale)) * scaleZ;
+                let z = Math.sin(Math.sqrt(x/scale*x/scale + y/scale*y/scale) + param*10) * scaleZ;
                 mesh.addPoint(new V3(
-                    x * scale,
-                    y * scale,
-                    z * scale
+                    x * stretch,
+                    y * stretch,
+                    z * stretch
                 ));
             }
         }
@@ -224,12 +225,9 @@ class AppGraph {
         return mesh;
     }
     frame () {
+
+        this.mesh = this.prepare(this.angle);
         const tmpMesh = new Mesh();
-
-        console.log('aaa',
-            this
-        );
-
 
         for(let n=0; n < this.mesh.pointList.length ;n++) {
             let point = this.mesh.pointList[n];
