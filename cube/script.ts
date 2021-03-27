@@ -1,3 +1,10 @@
+import Math;
+
+interface V2 {
+    x: number;
+    y: number;
+}
+
 class V3 {
     public x: number;
     public y: number;
@@ -159,25 +166,25 @@ class Canvas {
             }
         }
     }
-    to2d = (point: V3) => {
+    to2d = (point: V3): V2 => {
         const halfWidth = this.width / 2;
         const halfHeight = this.height / 2;
         let zFactor = (point.z - this.observer)/(- this.observer);
 
-        let x = Math.round( halfWidth + (point.x / zFactor);
-        let y = Math.round( halfHeight - (point.y / zFactor);
+        let x = Math.round( halfWidth + (point.x / zFactor));
+        let y = Math.round( halfHeight - (point.y / zFactor));
 
-        return [x, y];
+        return {x, y};
     }
     plot3d = (point: V3) => {
-        const [x, y] = this.to2d(point);
-        this.setPixel(x, y, [0,0,0,255]);
+        const p = this.to2d(point);
+        this.setPixel(p.x, p.y, [0,0,0,255]);
     }
     draw3d = (begin: V3, end: V3) => {
-        const [x1, y1] = this.to2d(begin);
-        const [x2, y2] = this.to2d(end);
+        const p1 = this.to2d(begin);
+        const p2 = this.to2d(end);
 
-        this.line(x1, y1, x2, y2, [0,0,0,255]);
+        this.line(p1.x, p1.y, p2.x, p2.y, [0,0,0,255]);
     }
     solid3d = (solid: Solid) => {
         solid.lineList.forEach((pointPair) => this.draw3d(solid.pointList[pointPair[0]], solid.pointList[pointPair[1]]));
@@ -226,10 +233,10 @@ class App {
             lineList: [],
         }
 
-        for(let n=0;n<box.pointList.length;n++) {
+        for(let n=0; n < box.pointList.length ;n++) {
             let point = box.pointList[n];
             point = point
-                .rotateX(this.angle * Math.sin(this.angle * 11) * 3)
+                .rotateX(Math.sin(this.angle*2) * 2 + Math.cos(this.angle*3) * 3)
                 .rotateY(this.angle/2)
                 .rotateZ(this.angle/3)
             ;
@@ -242,7 +249,7 @@ class App {
 
             thisbox.pointList[n] = point;
         }
-        for(let n=0;n<box.lineList.length;n++) {
+        for(let n=0; n<box.lineList.length; n++) {
             thisbox.lineList[n] = box.lineList[n];
         }
 

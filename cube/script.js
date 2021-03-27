@@ -1,3 +1,4 @@
+var Math = ;
 var V3 = /** @class */ (function () {
     function V3(x, y, z) {
         this.x = x;
@@ -120,16 +121,16 @@ var Canvas = /** @class */ (function () {
             var zFactor = (point.z - _this.observer) / (-_this.observer);
             var x = Math.round(halfWidth + (point.x / zFactor));
             var y = Math.round(halfHeight - (point.y / zFactor));
-            return [x, y];
+            return { x: x, y: y };
         };
         this.plot3d = function (point) {
-            var _a = _this.to2d(point), x = _a[0], y = _a[1];
-            _this.setPixel(x, y, [0, 0, 0, 255]);
+            var p = _this.to2d(point);
+            _this.setPixel(p.x, p.y, [0, 0, 0, 255]);
         };
         this.draw3d = function (begin, end) {
-            var _a = _this.to2d(begin), x1 = _a[0], y1 = _a[1];
-            var _b = _this.to2d(end), x2 = _b[0], y2 = _b[1];
-            _this.line(x1, y1, x2, y2, [0, 0, 0, 255]);
+            var p1 = _this.to2d(begin);
+            var p2 = _this.to2d(end);
+            _this.line(p1.x, p1.y, p2.x, p2.y, [0, 0, 0, 255]);
         };
         this.solid3d = function (solid) {
             solid.lineList.forEach(function (pointPair) { return _this.draw3d(solid.pointList[pointPair[0]], solid.pointList[pointPair[1]]); });
@@ -200,7 +201,7 @@ var App = /** @class */ (function () {
         for (var n = 0; n < box.pointList.length; n++) {
             var point = box.pointList[n];
             point = point
-                .rotateX(this.angle * Math.sin(this.angle * 11) * 3)
+                .rotateX(Math.sin(this.angle * 2) * 2 + Math.cos(this.angle * 3) * 3)
                 .rotateY(this.angle / 2)
                 .rotateZ(this.angle / 3);
             point.add(new V3(Math.sin(this.angle * 5) * 200, Math.sin(this.angle * 7) * 200, Math.sin(this.angle * 11) * 400 + 400));
