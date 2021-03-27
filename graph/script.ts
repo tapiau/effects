@@ -173,8 +173,8 @@ class Canvas {
         const halfHeight = this.height / 2;
         let zFactor = (point.z - this.observer)/(- this.observer);
 
-        let x = Math.round( halfWidth + (point.x / zFactor);
-        let y = Math.round( halfHeight - (point.y / zFactor);
+        let x = Math.round( halfWidth + (point.x / zFactor));
+        let y = Math.round( halfHeight - (point.y / zFactor));
 
         return {x: x, y: y};
     }
