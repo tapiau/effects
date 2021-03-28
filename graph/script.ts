@@ -96,13 +96,21 @@ class Canvas {
     }
 
     setPixel = (x: number, y: number, rgba) => {
-        x = Math.round(x);
-        y = Math.round(y);
-        const addr = this.addr(x, y);
-        this.data[addr] = rgba[0];
-        this.data[addr+1] = rgba[1];
-        this.data[addr+2] = rgba[2];
-        this.data[addr+3] = rgba[3];
+        if (
+            x >= 0
+            && x < this.width
+            && y >=0
+            && y < this.height
+        )
+        {
+            x = Math.round(x);
+            y = Math.round(y);
+            const addr = this.addr(x, y);
+            this.data[addr] = rgba[0];
+            this.data[addr+1] = rgba[1];
+            this.data[addr+2] = rgba[2];
+            this.data[addr+3] = rgba[3];
+        }
     };
     linex = (x: number, y: number, len: number, rgba) => {
         if (x + len > this.width) {

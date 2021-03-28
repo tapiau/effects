@@ -7,3 +7,4 @@ Compile:
     - typescript
   script:
     - tsc --target ES6 */script.ts
+

@@ -53,13 +53,18 @@ var Canvas = /** @class */ (function () {
             }
         };
         this.setPixel = function (x, y, rgba) {
-            x = Math.round(x);
-            y = Math.round(y);
-            var addr = _this.addr(x, y);
-            _this.data[addr] = rgba[0];
-            _this.data[addr + 1] = rgba[1];
-            _this.data[addr + 2] = rgba[2];
-            _this.data[addr + 3] = rgba[3];
+            if (x >= 0
+                && x < _this.width
+                && y >= 0
+                && y < _this.height) {
+                x = Math.round(x);
+                y = Math.round(y);
+                var addr = _this.addr(x, y);
+                _this.data[addr] = rgba[0];
+                _this.data[addr + 1] = rgba[1];
+                _this.data[addr + 2] = rgba[2];
+                _this.data[addr + 3] = rgba[3];
+            }
         };
         this.linex = function (x, y, len, rgba) {
             if (x + len > _this.width) {
